@@ -1,7 +1,6 @@
 package test.kata.bowling;
 
 import com.kata.bowling.Bowling;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
