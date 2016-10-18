@@ -11,7 +11,8 @@ import static org.junit.Assert.assertThat;
 public class FrameParserTest {
 
     @Test
-    public void a_single_frame() throws Exception {
+    public void no_frames() throws Exception {
+        assertThat(new FrameParser().parse(null), is(new ArrayList<Frame>()));
         assertThat(new FrameParser().parse(""), is(new ArrayList<Frame>()));
     }
 
