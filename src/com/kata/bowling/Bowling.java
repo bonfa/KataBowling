@@ -1,8 +1,5 @@
 package com.kata.bowling;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class Bowling {
 
 //    private final Map<String, Integer> singleTryScore = new HashMap<String, Integer>() {{
