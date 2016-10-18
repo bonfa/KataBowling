@@ -21,16 +21,15 @@ public class BowlingTest {
 
     @Test
     public void one_hit() throws Exception {
+        assertThat(new Bowling("1").total(), is(1));
         assertThat(new Bowling("2").total(), is(2));
-    }
-
-    @Test
-    public void another_hit() throws Exception {
+        assertThat(new Bowling("3").total(), is(3));
         assertThat(new Bowling("4").total(), is(4));
+        assertThat(new Bowling("5").total(), is(5));
+        assertThat(new Bowling("6").total(), is(6));
+        assertThat(new Bowling("7").total(), is(7));
+        assertThat(new Bowling("8").total(), is(8));
+        assertThat(new Bowling("9").total(), is(9));
     }
 
-//    @Test#
-//    public void one_hit() throws Exception {
-//        assertThat(new Bowling("2").total(), is(2));
-//    }
 }
