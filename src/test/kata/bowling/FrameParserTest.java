@@ -17,7 +17,7 @@ public class FrameParserTest {
     }
 
     @Test
-    public void two_trials_frame() throws Exception {
+    public void one_two_trials_frame() throws Exception {
         List<Frame> frames = new FrameParser().parse("1-");
         Frame scoreFrame = new ScoreFrame(1);
 
@@ -27,11 +27,20 @@ public class FrameParserTest {
     }
 
     @Test
-    public void strike_frame() throws Exception {
+    public void one_strike_frame() throws Exception {
         List<Frame> frames = new FrameParser().parse("x");
-        Frame scoreFrame = new StrikeFrame();
+        Frame strikeFrame = new StrikeFrame();
         assertThat(frames.size(), is(1));
-        assertThat(frames.get(0), is(scoreFrame));
+        assertThat(frames.get(0), is(strikeFrame));
+        assertThat(frames.get(0).getScore(), is(10));
+    }
+
+    @Test
+    public void one_spare_frame() throws Exception {
+        List<Frame> frames = new FrameParser().parse("4/");
+        Frame spareFrame = new SpareFrame();
+        assertThat(frames.size(), is(1));
+        assertThat(frames.get(0), is(spareFrame));
         assertThat(frames.get(0).getScore(), is(10));
     }
 
@@ -42,6 +51,9 @@ public class FrameParserTest {
                 Frame frame;
                 if (frames.equals("x")) {
                     frame = new StrikeFrame();
+                }
+                else if (frames.equals("4/")) {
+                    frame = new SpareFrame();
                 }
                 else {
                     frame = new ScoreFrame(1);
@@ -57,6 +69,7 @@ public class FrameParserTest {
     }
 
     private class ScoreFrame implements Frame {
+        //TODO save the two trials
         private int score;
 
         ScoreFrame(int score) {
@@ -80,6 +93,20 @@ public class FrameParserTest {
     }
 
     private class StrikeFrame implements Frame {
+        @Override
+        public int getScore() {
+            return 10;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            return (o != null && getClass() == o.getClass());
+        }
+    }
+
+    private class SpareFrame implements Frame {
+        //TODO save the two trials
         @Override
         public int getScore() {
             return 10;
