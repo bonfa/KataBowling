@@ -17,7 +17,7 @@ public class FrameParserTest {
     }
 
     @Test
-    public void a_single_frame() throws Exception {
+    public void two_trials_frame() throws Exception {
         List<Frame> frames = new FrameParser().parse("1-");
         Frame scoreFrame = new ScoreFrame(1);
 
@@ -26,11 +26,26 @@ public class FrameParserTest {
         assertThat(frames.get(0).getScore(), is(1));
     }
 
+    @Test
+    public void strike_frame() throws Exception {
+        List<Frame> frames = new FrameParser().parse("x");
+        Frame scoreFrame = new StrikeFrame();
+        assertThat(frames.size(), is(1));
+        assertThat(frames.get(0), is(scoreFrame));
+        assertThat(frames.get(0).getScore(), is(10));
+    }
+
     private class FrameParser {
         List<Frame> parse(String frames) {
             ArrayList<Frame> frames1 = new ArrayList<>();
             if (frames != null && !frames.isEmpty()) {
-                ScoreFrame frame = new ScoreFrame(1);
+                Frame frame;
+                if (frames.equals("x")) {
+                    frame = new StrikeFrame();
+                }
+                else {
+                    frame = new ScoreFrame(1);
+                }
                 frames1.add(frame);
             }
             return frames1;
@@ -42,7 +57,6 @@ public class FrameParserTest {
     }
 
     private class ScoreFrame implements Frame {
-
         private int score;
 
         ScoreFrame(int score) {
@@ -65,4 +79,16 @@ public class FrameParserTest {
         }
     }
 
+    private class StrikeFrame implements Frame {
+        @Override
+        public int getScore() {
+            return 10;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            return (o != null && getClass() == o.getClass());
+        }
+    }
 }
