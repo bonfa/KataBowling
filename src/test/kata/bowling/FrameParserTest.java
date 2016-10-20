@@ -19,7 +19,7 @@ public class FrameParserTest {
     @Test
     public void one_two_trials_frame() throws Exception {
         List<Frame> frames = new FrameParser().parse("1-");
-        Frame scoreFrame = new ScoreFrame(1);
+        Frame scoreFrame = new ScoreFrame(1, 0);
 
         assertThat(frames.size(), is(1));
         assertThat(frames.get(0), is(scoreFrame));
@@ -38,30 +38,52 @@ public class FrameParserTest {
     @Test
     public void one_spare_frame() throws Exception {
         List<Frame> frames = new FrameParser().parse("4/");
-        Frame spareFrame = new SpareFrame();
+        Frame spareFrame = new SpareFrame(4);
         assertThat(frames.size(), is(1));
         assertThat(frames.get(0), is(spareFrame));
         assertThat(frames.get(0).getScore(), is(10));
     }
 
     private class FrameParser {
-        List<Frame> parse(String frames) {
-            ArrayList<Frame> frames1 = new ArrayList<>();
-            if (frames != null && !frames.isEmpty()) {
-                Frame frame;
-                if (frames.equals("x")) {
-                    frame = new StrikeFrame();
-                }
-                else if (frames.equals("4/")) {
-                    frame = new SpareFrame();
-                }
-                else {
-                    frame = new ScoreFrame(1);
-                }
-                frames1.add(frame);
+        List<Frame> parse(String frameString) {
+            ArrayList<Frame> frames = new ArrayList<>();
+            if (frameString != null && !frameString.isEmpty()) {
+                Frame frame = parseFrame(frameString);
+                frames.add(frame);
             }
-            return frames1;
+            return frames;
         }
+
+        //TODO refactoring
+        private Frame parseFrame(String frameString) {
+            Frame frame;
+            char firstTrialScore = frameString.charAt(0);
+            if (firstTrialScore == 'x') {
+                frame = new StrikeFrame();
+            } else {
+                char secondTrialScore = frameString.charAt(1);
+                int firstTrialScoreValue = parseSingleTrialScore(firstTrialScore);
+                if (secondTrialScore == '/') {
+                    frame = new SpareFrame(firstTrialScoreValue);
+                } else {
+                    int secondTrialScoreValue = parseSingleTrialScore(secondTrialScore);
+                    frame = new ScoreFrame(firstTrialScoreValue, secondTrialScoreValue);
+                }
+            }
+            return frame;
+        }
+
+        private int parseSingleTrialScore(char firstTrialScore) {
+            if (firstTrialScore == '-') {
+                return 0;
+            } else if (firstTrialScore >= '1' && firstTrialScore <= '9') {
+                return Character.getNumericValue(firstTrialScore);
+            } else {
+                throw new FrameParseException();
+            }
+        }
+
+        private class FrameParseException extends RuntimeException {}
     }
 
     private interface Frame {
@@ -69,16 +91,18 @@ public class FrameParserTest {
     }
 
     private class ScoreFrame implements Frame {
-        //TODO save the two trials
-        private int score;
+        private int firstTrialScoreValue;
+        private int secondTrialScoreValue;
 
-        ScoreFrame(int score) {
-            this.score = score;
+        ScoreFrame(int firstTrialScoreValue, int secondTrialScoreValue) {
+
+            this.firstTrialScoreValue = firstTrialScoreValue;
+            this.secondTrialScoreValue = secondTrialScoreValue;
         }
 
         @Override
         public int getScore() {
-            return score;
+            return firstTrialScoreValue + secondTrialScoreValue;
         }
 
         @Override
@@ -88,7 +112,8 @@ public class FrameParserTest {
 
             ScoreFrame frame = (ScoreFrame) o;
 
-            return score == frame.score;
+            if (firstTrialScoreValue != frame.firstTrialScoreValue) return false;
+            return secondTrialScoreValue == frame.secondTrialScoreValue;
         }
     }
 
@@ -106,7 +131,13 @@ public class FrameParserTest {
     }
 
     private class SpareFrame implements Frame {
-        //TODO save the two trials
+        private int firstTrialScore;
+
+        SpareFrame(int firstTrialScore) {
+
+            this.firstTrialScore = firstTrialScore;
+        }
+
         @Override
         public int getScore() {
             return 10;
@@ -115,7 +146,12 @@ public class FrameParserTest {
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            return (o != null && getClass() == o.getClass());
+            if (o == null || getClass() != o.getClass()) return false;
+
+            SpareFrame that = (SpareFrame) o;
+
+            return firstTrialScore == that.firstTrialScore;
+
         }
     }
 }
