@@ -64,26 +64,38 @@ public class FrameParserTest {
             if (frameString != null && !frameString.isEmpty()) {
                 int[] trialScores = getSingleTrialScores(frameString);
 
-                int i = 0;
-                while (i < trialScores.length) {
-                    Frame frame;
-                    int firstTrialScore = trialScores[i];
-                    if (firstTrialScore == STRIKE) {
-                        frame = new StrikeFrame();
-                        i++;
-                    } else {
-                        int secondTrialScore = trialScores[i + 1];
-                        if (secondTrialScore == SPARE) {
-                            frame = new SpareFrame(firstTrialScore);
-                        } else {
-                            frame = new ScoreFrame(firstTrialScore, secondTrialScore);
-                        }
-                        i += 2;
-                    }
+                int index = 0;
+                while (index < trialScores.length) {
+                    Frame frame = getFrame(trialScores, index);
+                    index = getNewIndexForParsing(frame, index);
                     frames.add(frame);
                 }
             }
             return frames;
+        }
+
+        private Frame getFrame(int[] trialScores, int i) {
+            Frame frame;
+            int firstTrialScore = trialScores[i];
+            if (firstTrialScore == STRIKE) {
+                frame = new StrikeFrame();
+            } else {
+                int secondTrialScore = trialScores[i + 1];
+                if (secondTrialScore == SPARE) {
+                    frame = new SpareFrame(firstTrialScore);
+                } else {
+                    frame = new ScoreFrame(firstTrialScore, secondTrialScore);
+                }
+            }
+            return frame;
+        }
+
+        private int getNewIndexForParsing(Frame parsedFrame, int previousIndex) {
+            int newIndex = previousIndex + 2;
+            if (parsedFrame instanceof StrikeFrame) {
+                newIndex = previousIndex + 1;
+            }
+            return newIndex;
         }
 
         private int[] getSingleTrialScores(String frameString) {
