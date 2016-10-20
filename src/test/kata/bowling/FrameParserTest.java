@@ -28,7 +28,7 @@ public class FrameParserTest {
 
     @Test
     public void one_strike_frame() throws Exception {
-        List<Frame> frames = new FrameParser().parse("x");
+        List<Frame> frames = new FrameParser().parse("X");
         Frame strikeFrame = new StrikeFrame();
         assertThat(frames.size(), is(1));
         assertThat(frames.get(0), is(strikeFrame));
@@ -44,46 +44,73 @@ public class FrameParserTest {
         assertThat(frames.get(0).getScore(), is(10));
     }
 
+    @Test
+    public void four_trials() throws Exception {
+        List<Frame> frames = new FrameParser().parse("4--5");
+        assertThat(frames.size(), is(2));
+        assertThat(frames.get(0), is(new ScoreFrame(4, 0)));
+        assertThat(frames.get(0).getScore(), is(4));
+        assertThat(frames.get(1), is(new ScoreFrame(0, 5)));
+        assertThat(frames.get(1).getScore(), is(5));
+    }
+
     private class FrameParser {
+
+        private static final int STRIKE = -1;
+        private static final int SPARE = -2;
+
         List<Frame> parse(String frameString) {
             ArrayList<Frame> frames = new ArrayList<>();
             if (frameString != null && !frameString.isEmpty()) {
-                Frame frame = parseFrame(frameString);
-                frames.add(frame);
+                int[] trialScores = getSingleTrialScores(frameString);
+
+                int i = 0;
+                while (i < trialScores.length) {
+                    Frame frame;
+                    int firstTrialScore = trialScores[i];
+                    if (firstTrialScore == STRIKE) {
+                        frame = new StrikeFrame();
+                        i++;
+                    } else {
+                        int secondTrialScore = trialScores[i + 1];
+                        if (secondTrialScore == SPARE) {
+                            frame = new SpareFrame(firstTrialScore);
+                        } else {
+                            frame = new ScoreFrame(firstTrialScore, secondTrialScore);
+                        }
+                        i += 2;
+                    }
+                    frames.add(frame);
+                }
             }
             return frames;
         }
 
-        //TODO refactoring
-        private Frame parseFrame(String frameString) {
-            Frame frame;
-            char firstTrialScore = frameString.charAt(0);
-            if (firstTrialScore == 'x') {
-                frame = new StrikeFrame();
-            } else {
-                char secondTrialScore = frameString.charAt(1);
-                int firstTrialScoreValue = parseSingleTrialScore(firstTrialScore);
-                if (secondTrialScore == '/') {
-                    frame = new SpareFrame(firstTrialScoreValue);
-                } else {
-                    int secondTrialScoreValue = parseSingleTrialScore(secondTrialScore);
-                    frame = new ScoreFrame(firstTrialScoreValue, secondTrialScoreValue);
-                }
+        private int[] getSingleTrialScores(String frameString) {
+            char[] charArrays = frameString.toCharArray();
+            int[] trialScores = new int[charArrays.length];
+            for (int i = 0; i < trialScores.length; i++) {
+                trialScores[i] = parseSingleTrialScore(charArrays[i]);
             }
-            return frame;
+            return trialScores;
         }
 
-        private int parseSingleTrialScore(char firstTrialScore) {
-            if (firstTrialScore == '-') {
+        private int parseSingleTrialScore(char stringValue) {
+            if (stringValue >= '1' && stringValue <= '9') {
+                return Character.getNumericValue(stringValue);
+            } else if (stringValue == 'X') {
+                return STRIKE;
+            } else if (stringValue == '/') {
+                return SPARE;
+            } else if (stringValue == '-') {
                 return 0;
-            } else if (firstTrialScore >= '1' && firstTrialScore <= '9') {
-                return Character.getNumericValue(firstTrialScore);
             } else {
                 throw new FrameParseException();
             }
         }
 
-        private class FrameParseException extends RuntimeException {}
+        private class FrameParseException extends RuntimeException {
+        }
     }
 
     private interface Frame {
