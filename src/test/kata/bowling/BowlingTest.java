@@ -1,6 +1,24 @@
 package test.kata.bowling;
 
+import com.kata.bowling.Bowling;
+import com.kata.bowling.Frame;
+import com.kata.bowling.ScoreFrame;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+
 public class BowlingTest {
+
+    @Test
+    public void no_frames() {
+        Bowling bowling = new Bowling();
+        assertThat(bowling.total(null), is(0));
+        assertThat(bowling.total(new ArrayList<>()), is(0));
+    }
 
 //    @Test
 //    public void a_single_frame() {
@@ -10,6 +28,7 @@ public class BowlingTest {
 //        Bowling bowling = new Bowling();
 //        assertThat(bowling.total(frames), is(frame.getScore()));
 //    }
+
 //
 //    @Test
 //    public void a_single_spare_frame() {

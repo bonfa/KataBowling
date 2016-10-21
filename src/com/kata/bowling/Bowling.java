@@ -1,13 +1,19 @@
 package com.kata.bowling;
 
+import java.util.List;
+
 public class Bowling {
 
     public Bowling() {
     }
 
+    public int total(List<Frame> frames) {
+        return 0;
+    }
+
 //    public int total(List<Frame> frames) {
-//        return
-//        return frames.get(0).getScore();
+//        return 0;
+////        return frames.get(0).getScore();
 //    }
 
     public static void main(String[] args) {
