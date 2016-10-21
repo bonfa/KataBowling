@@ -20,14 +20,14 @@ public class BowlingTest {
         assertThat(bowling.total(new ArrayList<>()), is(0));
     }
 
-//    @Test
-//    public void a_single_frame() {
-//        List<Frame> frames = new ArrayList<>();
-//        ScoreFrame frame = new ScoreFrame(4, 0);
-//        frames.add(frame);
-//        Bowling bowling = new Bowling();
-//        assertThat(bowling.total(frames), is(frame.getScore()));
-//    }
+    @Test
+    public void a_single_frame() {
+        List<Frame> frames = new ArrayList<>();
+        ScoreFrame frame = new ScoreFrame(4, 0);
+        frames.add(frame);
+        Bowling bowling = new Bowling();
+        assertThat(bowling.total(frames), is(frame.getScore()));
+    }
 
 //
 //    @Test
