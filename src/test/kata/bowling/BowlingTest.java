@@ -46,14 +46,17 @@ public class BowlingTest {
     }
 
     @Test
-    public void two_frames_without_strikes_or_spares() throws Exception {
+    public void more_frames_without_strikes_or_spares() throws Exception {
         List<Frame> frames = new ArrayList<>();
         ScoreFrame frame_1 = new ScoreFrame(2, 0);
         ScoreFrame frame_2 = new ScoreFrame(4, 3);
+        ScoreFrame frame_3 = new ScoreFrame(5, 4);
         frames.add(frame_1);
         frames.add(frame_2);
+        frames.add(frame_3);
         Bowling bowling = new Bowling();
-        assertThat(bowling.total(frames), is(frame_1.getScore() + frame_2.getScore()));
+        assertThat(bowling.total(frames), is(frame_1.getScore() + frame_2.getScore() + frame_3.getScore()));
     }
+    
 
 }
