@@ -75,6 +75,15 @@ public class FrameParserTest {
         assertThat(frames.get(2).getScore(), is(10));
     }
 
+    @Test
+    public void all_strikes() throws Exception {
+        List<Frame> frames = new FrameParser().parse("XXX");
+        assertThat(frames.size(), is(3));
+        assertThat(frames.get(0), is(new StrikeFrame()));
+        assertThat(frames.get(1), is(new StrikeFrame()));
+        assertThat(frames.get(2), is(new StrikeFrame()));
+    }
+
     private class FrameParser {
 
         private static final int STRIKE = -1;
