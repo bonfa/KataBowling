@@ -1,8 +1,6 @@
 package test.kata.bowling;
 
-import com.kata.bowling.Bowling;
-import com.kata.bowling.Frame;
-import com.kata.bowling.ScoreFrame;
+import com.kata.bowling.*;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -29,25 +27,24 @@ public class BowlingTest {
         assertThat(bowling.total(frames), is(frame.getScore()));
     }
 
-//
-//    @Test
-//    public void a_single_spare_frame() {
-//        List<Frame> frames = new ArrayList<>();
-//        Frame frame = new SpareFrame(4);
-//        frames.add(frame);
-//        Bowling bowling = new Bowling();
-//        assertThat(bowling.total(frames), is(frame.getScore()));
-//    }
-//
-//    @Test
-//    public void a_single_strike_frame() {
-//        List<Frame> frames = new ArrayList<>();
-//        Frame frame = new StrikeFrame();
-//        frames.add(frame);
-//        Bowling bowling = new Bowling();
-//        assertThat(bowling.total(frames), is(frame.getScore()));
-//    }
-//
+    @Test
+    public void a_single_spare_frame() {
+        List<Frame> frames = new ArrayList<>();
+        Frame frame = new SpareFrame(4);
+        frames.add(frame);
+        Bowling bowling = new Bowling();
+        assertThat(bowling.total(frames), is(frame.getScore()));
+    }
+
+    @Test
+    public void a_single_strike_frame() {
+        List<Frame> frames = new ArrayList<>();
+        Frame frame = new StrikeFrame();
+        frames.add(frame);
+        Bowling bowling = new Bowling();
+        assertThat(bowling.total(frames), is(frame.getScore()));
+    }
+
 //    @Test
 //    public void two_frames_without_strikes_or_spares() throws Exception {
 //        List<Frame> frames = new ArrayList<>();
