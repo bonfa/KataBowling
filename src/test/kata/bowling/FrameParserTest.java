@@ -2,7 +2,6 @@ package test.kata.bowling;
 
 import org.junit.Test;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,7 +64,16 @@ public class FrameParserTest {
         assertThat(frames.get(1).getScore(), is(5));
     }
 
-    
+    @Test
+    public void five_trials_with_strikes() throws Exception {
+        List<Frame> frames = new FrameParser().parse("4-X5/");
+        assertThat(frames.size(), is(3));
+        assertThat(frames.get(0), is(new ScoreFrame(4, 0)));
+        assertThat(frames.get(0).getScore(), is(4));
+        assertThat(frames.get(1), is(new StrikeFrame()));
+        assertThat(frames.get(2), is(new SpareFrame(5)));
+        assertThat(frames.get(2).getScore(), is(10));
+    }
 
     private class FrameParser {
 
@@ -91,7 +99,7 @@ public class FrameParserTest {
                 return frames;
             }
             else {
-                int numberOfTrialsOfNextFrame = getNextFrameIndex(trialScores);
+                int numberOfTrialsOfNextFrame = getNextFrameIndex(numberOfTrialsOffset, trialScores);
                 Frame frame = parseFrame(numberOfTrialsOffset, numberOfTrialsOfNextFrame, trialScores);
                 frames.add(frame);
                 frames.addAll(parse(numberOfTrialsOffset + numberOfTrialsOfNextFrame, trialScores));
@@ -99,9 +107,9 @@ public class FrameParserTest {
             }
         }
 
-        private int getNextFrameIndex(int[] trialScores) {
+        private int getNextFrameIndex(int indexOffset, int[] trialScores) {
             int nextFrameIndex = 2;
-            if (trialScores[0] == STRIKE) {
+            if (trialScores[indexOffset] == STRIKE) {
                 nextFrameIndex = 1;
             }
             return nextFrameIndex;
