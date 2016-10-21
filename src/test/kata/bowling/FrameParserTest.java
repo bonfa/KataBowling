@@ -63,24 +63,41 @@ public class FrameParserTest {
             ArrayList<Frame> frames = new ArrayList<>();
             if (frameString != null && !frameString.isEmpty()) {
                 int[] trialScores = getSingleTrialScores(frameString);
-
-                int index = 0;
-                while (index < trialScores.length) {
-                    Frame frame = getFrame(trialScores, index);
-                    index = getNewIndexForParsing(frame, index);
-                    frames.add(frame);
-                }
+                frames = parse(0, trialScores);
             }
             return frames;
         }
 
-        private Frame getFrame(int[] trialScores, int i) {
+        private ArrayList<Frame> parse(int numberOfTrialsOffset, int[] trialScores) {
+            ArrayList<Frame> frames = new ArrayList<>();
+            if (numberOfTrialsOffset >= trialScores.length) {
+                return frames;
+            }
+            else {
+                int numberOfTrialsOfNextFrame = getNextFrameIndex(trialScores);
+                Frame frame = parseFrame(numberOfTrialsOffset, numberOfTrialsOfNextFrame, trialScores);
+                frames.add(frame);
+                frames.addAll(parse(numberOfTrialsOffset + numberOfTrialsOfNextFrame, trialScores));
+                return frames;
+            }
+        }
+
+        private int getNextFrameIndex(int[] trialScores) {
+            int nextFrameIndex = 2;
+            if (trialScores[0] == STRIKE) {
+                nextFrameIndex = 1;
+            }
+            return nextFrameIndex;
+        }
+
+        private Frame parseFrame(int numberOfTrialsOffset, int nextFrameIndex, int[] trialScores) {
             Frame frame;
-            int firstTrialScore = trialScores[i];
-            if (firstTrialScore == STRIKE) {
+            if (nextFrameIndex == 1) {
                 frame = new StrikeFrame();
-            } else {
-                int secondTrialScore = trialScores[i + 1];
+            }
+            else {
+                int firstTrialScore = trialScores[numberOfTrialsOffset];
+                int secondTrialScore = trialScores[numberOfTrialsOffset + 1];
                 if (secondTrialScore == SPARE) {
                     frame = new SpareFrame(firstTrialScore);
                 } else {
@@ -88,14 +105,6 @@ public class FrameParserTest {
                 }
             }
             return frame;
-        }
-
-        private int getNewIndexForParsing(Frame parsedFrame, int previousIndex) {
-            int newIndex = previousIndex + 2;
-            if (parsedFrame instanceof StrikeFrame) {
-                newIndex = previousIndex + 1;
-            }
-            return newIndex;
         }
 
         private int[] getSingleTrialScores(String frameString) {
