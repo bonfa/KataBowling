@@ -3,6 +3,7 @@ package test.kata.bowling;
 import com.kata.bowling.Frame;
 import com.kata.bowling.ScoreFrame;
 import com.kata.bowling.SpareFrame;
+import com.kata.bowling.StrikeFrame;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -182,19 +183,6 @@ public class FrameParserTest {
     }
 
     private class FrameParseException extends RuntimeException {
-    }
-
-    private class StrikeFrame implements Frame {
-        @Override
-        public int getScore() {
-            return 10;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            return (o != null && getClass() == o.getClass());
-        }
     }
 
 }
