@@ -84,6 +84,15 @@ public class FrameParserTest {
         assertThat(frames.get(2), is(new StrikeFrame()));
     }
 
+    @Test
+    public void all_spares() throws Exception {
+        List<Frame> frames = new FrameParser().parse("-/-/2/");
+        assertThat(frames.size(), is(3));
+        assertThat(frames.get(0), is(new SpareFrame(0)));
+        assertThat(frames.get(1), is(new SpareFrame(0)));
+        assertThat(frames.get(2), is(new SpareFrame(2)));
+    }
+
     private class FrameParser {
 
         private static final int STRIKE = -1;
