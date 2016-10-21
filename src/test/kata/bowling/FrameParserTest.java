@@ -2,6 +2,7 @@ package test.kata.bowling;
 
 import org.junit.Test;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ public class FrameParserTest {
 
     @Test
     public void no_frames() throws Exception {
-        assertThat(new FrameParser().parse(null), is(new ArrayList<Frame>()));
+        assertThat(new FrameParser().parse((String) null), is(new ArrayList<Frame>()));
         assertThat(new FrameParser().parse(""), is(new ArrayList<Frame>()));
     }
 
@@ -54,6 +55,18 @@ public class FrameParserTest {
         assertThat(frames.get(1).getScore(), is(5));
     }
 
+    @Test(expected = FrameParseException.class)
+    public void five_trials_without_strikes() throws Exception {
+        List<Frame> frames = new FrameParser().parse("4--5-");
+        assertThat(frames.size(), is(2));
+        assertThat(frames.get(0), is(new ScoreFrame(4, 0)));
+        assertThat(frames.get(0).getScore(), is(4));
+        assertThat(frames.get(1), is(new ScoreFrame(0, 5)));
+        assertThat(frames.get(1).getScore(), is(5));
+    }
+
+    
+
     private class FrameParser {
 
         private static final int STRIKE = -1;
@@ -63,9 +76,13 @@ public class FrameParserTest {
             ArrayList<Frame> frames = new ArrayList<>();
             if (frameString != null && !frameString.isEmpty()) {
                 int[] trialScores = getSingleTrialScores(frameString);
-                frames = parse(0, trialScores);
+                frames = parse(trialScores);
             }
             return frames;
+        }
+
+        private ArrayList<Frame> parse(int[] trialScores) {
+            return parse(0, trialScores);
         }
 
         private ArrayList<Frame> parse(int numberOfTrialsOffset, int[] trialScores) {
@@ -95,7 +112,7 @@ public class FrameParserTest {
             if (nextFrameIndex == 1) {
                 frame = new StrikeFrame();
             }
-            else {
+            else if (numberOfTrialsOffset + 1 < trialScores.length) {
                 int firstTrialScore = trialScores[numberOfTrialsOffset];
                 int secondTrialScore = trialScores[numberOfTrialsOffset + 1];
                 if (secondTrialScore == SPARE) {
@@ -103,6 +120,9 @@ public class FrameParserTest {
                 } else {
                     frame = new ScoreFrame(firstTrialScore, secondTrialScore);
                 }
+            }
+            else {
+                throw new FrameParseException();
             }
             return frame;
         }
@@ -130,8 +150,9 @@ public class FrameParserTest {
             }
         }
 
-        private class FrameParseException extends RuntimeException {
-        }
+    }
+
+    private class FrameParseException extends RuntimeException {
     }
 
     private interface Frame {
