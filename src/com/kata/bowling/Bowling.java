@@ -10,7 +10,9 @@ public class Bowling {
     public int total(List<Frame> frames) {
         int totalScores = 0;
         if (frames != null && frames.size() > 0) {
-            totalScores = frames.get(0).getScore();
+            for (Frame frame : frames) {
+                totalScores += frame.getScore();
+            }
         }
         return totalScores;
     }
