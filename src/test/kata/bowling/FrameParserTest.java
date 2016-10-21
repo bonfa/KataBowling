@@ -2,6 +2,7 @@ package test.kata.bowling;
 
 import com.kata.bowling.Frame;
 import com.kata.bowling.ScoreFrame;
+import com.kata.bowling.SpareFrame;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -196,28 +197,4 @@ public class FrameParserTest {
         }
     }
 
-    private class SpareFrame implements Frame {
-        private int firstTrialScore;
-
-        SpareFrame(int firstTrialScore) {
-
-            this.firstTrialScore = firstTrialScore;
-        }
-
-        @Override
-        public int getScore() {
-            return 10;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            SpareFrame that = (SpareFrame) o;
-
-            return firstTrialScore == that.firstTrialScore;
-
-        }
-    }
 }
