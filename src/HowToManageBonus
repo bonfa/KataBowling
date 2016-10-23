@@ -1,0 +1,33 @@
+Some ideas:
+
+1 - Implement the logic directly in the Bowling class
+        |--> This breaks the encapsulation in order to know which kind of bonus each frame needs
+
+2 - Pass a bonus collaborators to each object
+    where can i do it?
+        |--> In the parser
+        |--> In the Bowling class
+                |--> this violates the encapsulation (maybe not if i use the pattern command)
+
+3 - Create each frame with more 3 or 4 trials (instead of 1 or 2) so that i can use the next info in case of strikes or spares.
+        |--> I have a lot of duplicated information
+
+4 - Create a composite of frames, so that in some way a strike wraps its next two trials.
+
+5 - Instead of creating directly the object in the parser, use a factory that knows which object to create and
+    requires more than 2 trials in order to create the frame.
+        |--> the factory creates the bonus (thanks to another method?)
+        |--> create a "trial" object
+        |--> create a "nullTrial" object for a trial which is not present,
+        |--> how can i avoid the info duplication?
+
+6 - Create a structure (a tree or something similar) that allows a node to know the presence of other objects of the
+    same type and, in case of strike or spare, calls the score of the next nodes.
+
+
+------------------
+| Final solution |
+------------------
+Parse the string from the end back to the beginning
+Create a composite for the frame so that strikes and parse can wrap the next frames
+Make all the objects immutable
