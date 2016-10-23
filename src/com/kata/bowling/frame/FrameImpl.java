@@ -1,8 +1,8 @@
-package com.kata.bowling;
+package com.kata.bowling.frame;
 
 abstract class FrameImpl implements Frame {
 
-    protected Frame nextFrame;
+    Frame nextFrame;
 
     @Override
     public void add(Frame nextFrame) {

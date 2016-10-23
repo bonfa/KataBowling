@@ -1,5 +1,7 @@
 package com.kata.bowling;
 
+import com.kata.bowling.frame.*;
+
 import java.util.ArrayList;
 import java.util.List;
 

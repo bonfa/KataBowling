@@ -1,5 +1,7 @@
 package com.kata.bowling;
 
+import com.kata.bowling.frame.Frame;
+
 import java.util.List;
 
 public class Bowling {

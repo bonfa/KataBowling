@@ -1,7 +1,7 @@
 package test.kata.bowling;
 
 import com.kata.bowling.*;
-import org.junit.Ignore;
+import com.kata.bowling.frame.*;
 import org.junit.Test;
 
 import java.util.ArrayList;

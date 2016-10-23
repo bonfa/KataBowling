@@ -1,4 +1,4 @@
-package com.kata.bowling;
+package com.kata.bowling.frame;
 
 public class SpareFrame extends FrameImpl {
     private int firstTrialScore;

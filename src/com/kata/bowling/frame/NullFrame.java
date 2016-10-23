@@ -1,4 +1,4 @@
-package com.kata.bowling;
+package com.kata.bowling.frame;
 
 public class NullFrame implements Frame {
 
