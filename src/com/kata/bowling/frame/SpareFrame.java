@@ -24,6 +24,13 @@ public class SpareFrame extends FrameImpl {
     }
 
     @Override
+    public Frame copy() {
+        Frame frame = new SpareFrame(firstTrialScore);
+        frame.add(nextFrame.copy());
+        return frame;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -34,5 +41,12 @@ public class SpareFrame extends FrameImpl {
 
         return firstTrialScore == that.firstTrialScore;
 
+    }
+
+    @Override
+    public String toString() {
+        return "SpareFrame{" +
+                "firstTrialScore=" + firstTrialScore +
+                "} " + super.toString();
     }
 }

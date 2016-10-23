@@ -23,9 +23,18 @@ public class NullFrame implements Frame {
     }
 
     @Override
+    public Frame copy() {
+        return new NullFrame();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         return (o != null && getClass() == o.getClass());
     }
 
+    @Override
+    public String toString() {
+        return "NullFrame{}";
+    }
 }

@@ -24,8 +24,17 @@ public class FrameParser {
         for (int i = 0; i < frames.size(); i++) {
             Frame frame = getFrameAtIndex(frames, i);
             Frame nextFrame = getFrameAtIndex(frames, i + 1);
-            nextFrame.add(getFrameAtIndex(frames, i + 2));
+            Frame nextNextFrame = getFrameAtIndex(frames, i + 2);
+            nextFrame.add(nextNextFrame);
             frame.add(nextFrame);
+            if (i == 9) {
+                nextNextFrame.add(new NullFrame());
+                break;
+            }
+        }
+
+        while (frames.size() > 10) {
+            frames.remove(10);
         }
     }
 

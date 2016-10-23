@@ -1,6 +1,7 @@
 package test.kata.bowling;
 
 import com.kata.bowling.Bowling;
+import com.kata.bowling.FrameParser;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -9,20 +10,19 @@ import static org.junit.Assert.assertThat;
 
 public class AcceptanceTest {
 
-
-    @Test@Ignore
+    @Test
     public void all_strikes() {
-//        assertThat(new Bowling().total("XXXXXXXXXXXX"), is(300));
+        assertThat(new Bowling().total(new FrameParser().parse("XXXXXXXXXXXX")), is(300));
     }
 
-    @Test@Ignore
+    @Test
     public void all_spares() {
-//        assertThat(new Bowling().total("5/5/5/5/5/5/5/5/5/5/5"), is(150));
+        assertThat(new Bowling().total(new FrameParser().parse("5/5/5/5/5/5/5/5/5/5/5/")), is(150));
     }
 
-    @Test@Ignore
+    @Test
     public void no_strikes_and_no_spares() {
-//        assertThat(new Bowling().total("9-9-9-9-9-9-9-9-9-9-"), is(90));
+        assertThat(new Bowling().total(new FrameParser().parse("9-9-9-9-9-9-9-9-9-9-")), is(90));
     }
 
 }

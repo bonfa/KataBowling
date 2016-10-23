@@ -8,4 +8,11 @@ abstract class FrameImpl implements Frame {
     public void add(Frame nextFrame) {
         this.nextFrame = nextFrame;
     }
+
+    @Override
+    public String toString() {
+        return "FrameImpl{" +
+                "nextFrame=" + nextFrame.toString() +
+                '}';
+    }
 }

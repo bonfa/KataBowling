@@ -26,6 +26,13 @@ public class ScoreFrame extends FrameImpl {
     }
 
     @Override
+    public Frame copy() {
+        Frame frame = new ScoreFrame(firstTrialScoreValue, secondTrialScoreValue);
+        frame.add(nextFrame.copy());
+        return frame;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -35,5 +42,13 @@ public class ScoreFrame extends FrameImpl {
         if (firstTrialScoreValue != frame.firstTrialScoreValue) return false;
         if (!nextFrame.equals(frame.nextFrame)) return false;
         return secondTrialScoreValue == frame.secondTrialScoreValue;
+    }
+
+    @Override
+    public String toString() {
+        return "ScoreFrame{" +
+                "firstTrialScoreValue=" + firstTrialScoreValue +
+                ", secondTrialScoreValue=" + secondTrialScoreValue +
+                "} " + super.toString();
     }
 }

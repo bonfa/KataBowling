@@ -138,4 +138,20 @@ public class FrameParserTest {
         assertThat(frames.get(2), is(frame_3));
     }
 
+    @Test
+    public void the_eleventh_and_twelfth_serve_only_as_bonus_of_tenth_frame() throws Exception {
+        List<Frame> frames = new FrameParser().parse("------------------XXX");
+
+        assertThat(frames.size(), is(10));
+
+        Frame frame_12_known_by_10th = new StrikeFrame();
+        frame_12_known_by_10th.add(NULL_FRAME);
+        Frame frame_11_known_by_10th = new StrikeFrame();
+        frame_11_known_by_10th.add(frame_12_known_by_10th);
+        Frame frame_10 = new StrikeFrame();
+        frame_10.add(frame_11_known_by_10th);
+        assertThat(frames.get(9), is(frame_10));
+    }
+
+
 }
