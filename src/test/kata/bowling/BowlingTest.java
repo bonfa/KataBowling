@@ -80,6 +80,8 @@ public class BowlingTest {
         assertThat(bowling.total(frames), is((10 + 4) + 7 + 9));
     }
 
+    
+
 
 
 }
