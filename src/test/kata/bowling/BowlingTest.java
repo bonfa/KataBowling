@@ -1,6 +1,7 @@
 package test.kata.bowling;
 
 import com.kata.bowling.*;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -10,6 +11,8 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 public class BowlingTest {
+
+    private static final Frame NULL_FRAME = new NullFrame();
 
     @Test
     public void no_frames() {
@@ -24,16 +27,17 @@ public class BowlingTest {
         Frame frame = new ScoreFrame(4, 0);
         frames.add(frame);
         Bowling bowling = new Bowling();
-        assertThat(bowling.total(frames), is(frame.getScore()));
+        assertThat(bowling.total(frames), is(4));
     }
 
     @Test
     public void a_single_spare_frame() {
         List<Frame> frames = new ArrayList<>();
         Frame frame = new SpareFrame(4);
+        frame.add(NULL_FRAME);
         frames.add(frame);
         Bowling bowling = new Bowling();
-        assertThat(bowling.total(frames), is(frame.getScore()));
+        assertThat(bowling.total(frames), is(10));
     }
 
     @Test
@@ -42,7 +46,7 @@ public class BowlingTest {
         Frame frame = new StrikeFrame();
         frames.add(frame);
         Bowling bowling = new Bowling();
-        assertThat(bowling.total(frames), is(frame.getScore()));
+        assertThat(bowling.total(frames), is(10));
     }
 
     @Test
@@ -55,7 +59,27 @@ public class BowlingTest {
         frames.add(frame_2);
         frames.add(frame_3);
         Bowling bowling = new Bowling();
-        assertThat(bowling.total(frames), is(frame_1.getScore() + frame_2.getScore() + frame_3.getScore()));
+        assertThat(bowling.total(frames), is(2 + 7 + 9));
     }
+
+    @Test
+    public void more_frames_with_spares() throws Exception {
+        List<Frame> frames = new ArrayList<>();
+
+        Frame frame_3 = new ScoreFrame(5, 4);
+        Frame frame_2 = new ScoreFrame(4, 3);
+        frame_2.add(frame_3);
+        Frame frame_1 = new SpareFrame(4);
+        frame_1.add(frame_2);
+
+        frames.add(frame_1);
+        frames.add(frame_2);
+        frames.add(frame_3);
+
+        Bowling bowling = new Bowling();
+        assertThat(bowling.total(frames), is((10 + 4) + 7 + 9));
+    }
+
+
 
 }
