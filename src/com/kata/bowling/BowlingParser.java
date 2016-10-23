@@ -5,7 +5,7 @@ import com.kata.bowling.frame.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FrameParser {
+public class BowlingParser {
 
     private static final int STRIKE = -1;
     private static final int SPARE = -2;
