@@ -1,5 +1,6 @@
-Some ideas:
-
+------------------------------------------
+| Some ideas on how to manange the bonus |
+------------------------------------------
 1 - Implement the logic directly in the Bowling class
         |--> This breaks the encapsulation in order to know which kind of bonus each frame needs
 
@@ -28,6 +29,13 @@ Some ideas:
 ------------------
 | Final solution |
 ------------------
-Parse the string from the end back to the beginning
-Create a composite for the frame so that strikes and parse can wrap the next frames
+Create a composite structure for the frame so that strikes and parse can wrap the next frames
+And make the eleventh and the twelfth frames useful only as bonus of the tenth trial
+
+
+------------------------
+| Further improvements |
+------------------------
+Move the creation process in a factory in order to make the parser simpler
 Make all the objects immutable
+    |--> so we can evaluate if the objects are equals basing on the hash method (that would be calculated at construction time)
