@@ -19,6 +19,11 @@ public class SpareFrame extends FrameImpl {
     }
 
     @Override
+    public int getNextTwoTrialsScore() {
+        return 10;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

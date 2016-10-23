@@ -21,6 +21,11 @@ public class ScoreFrame extends FrameImpl {
     }
 
     @Override
+    public int getNextTwoTrialsScore() {
+        return getScore();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

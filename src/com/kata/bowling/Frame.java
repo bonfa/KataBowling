@@ -6,4 +6,6 @@ public interface Frame {
     void add(Frame nextFrame);
 
     int getFirstTrialScore();
+
+    int getNextTwoTrialsScore();
 }

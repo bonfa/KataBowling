@@ -18,6 +18,11 @@ public class NullFrame implements Frame {
     }
 
     @Override
+    public int getNextTwoTrialsScore() {
+        return 0;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         return (o != null && getClass() == o.getClass());
