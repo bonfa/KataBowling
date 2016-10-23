@@ -26,13 +26,6 @@ public class ScoreFrame extends FrameImpl {
     }
 
     @Override
-    public Frame copy() {
-        Frame frame = new ScoreFrame(firstTrialScoreValue, secondTrialScoreValue);
-        frame.add(nextFrame.copy());
-        return frame;
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

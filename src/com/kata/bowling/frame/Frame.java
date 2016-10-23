@@ -8,6 +8,4 @@ public interface Frame {
     int getFirstTrialScore();
 
     int getNextTwoTrialsScore();
-
-    Frame copy();
 }

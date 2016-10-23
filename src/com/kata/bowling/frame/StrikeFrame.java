@@ -17,13 +17,6 @@ public class StrikeFrame extends FrameImpl {
     }
 
     @Override
-    public Frame copy() {
-        StrikeFrame strikeFrame = new StrikeFrame();
-        strikeFrame.add(nextFrame.copy());
-        return strikeFrame;
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
