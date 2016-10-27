@@ -38,11 +38,11 @@ public class BowlingParser {
     }
 
     private void updateFrameStructure(ArrayList<Frame> frames) {
-        addNextTwoFrameToEachFrame(frames);
+        addNextTwoFramesToEachOfTheFirstNineFrames(frames);
         keepOnlyTheFirstTenFrames(frames);
     }
 
-    private void addNextTwoFrameToEachFrame(ArrayList<Frame> frames) {
+    private void addNextTwoFramesToEachOfTheFirstNineFrames(ArrayList<Frame> frames) {
         for (int i = 0; i < frames.size(); i++) {
             Frame frame = getFrameAtIndex(frames, i);
             Frame nextFrame = getFrameAtIndex(frames, i + 1);
@@ -62,10 +62,10 @@ public class BowlingParser {
         }
     }
 
-    private Frame getFrameAtIndex(ArrayList<Frame> frames, int i) {
+    private Frame getFrameAtIndex(ArrayList<Frame> frames, int index) {
         Frame frame;
-        if (i < frames.size()) {
-            frame = frames.get(i);
+        if (index < frames.size()) {
+            frame = frames.get(index);
         } else {
             frame = new NullFrame();
         }
