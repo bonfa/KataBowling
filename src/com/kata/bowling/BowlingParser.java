@@ -12,7 +12,7 @@ public class BowlingParser {
 
     public List<Frame> parse(String frameString) {
         ArrayList<Frame> frames = new ArrayList<>();
-        if (frameString != null && !frameString.isEmpty()) {
+        if (hasFrame(frameString)) {
             int[] trialScores = getSingleTrialScores(frameString);
             frames = parse(trialScores);
             updateFrameStructure(frames);
@@ -20,7 +20,29 @@ public class BowlingParser {
         return frames;
     }
 
+    private boolean hasFrame(String frameString) {
+        return frameString != null && !frameString.isEmpty();
+    }
+
+    private int[] getSingleTrialScores(String frameString) {
+        char[] charArrays = frameString.toCharArray();
+        int[] trialScores = new int[charArrays.length];
+        for (int i = 0; i < trialScores.length; i++) {
+            trialScores[i] = parseSingleTrialScore(charArrays[i]);
+        }
+        return trialScores;
+    }
+
+    private ArrayList<Frame> parse(int[] trialScores) {
+        return parse(0, trialScores);
+    }
+
     private void updateFrameStructure(ArrayList<Frame> frames) {
+        addNextTwoFrameToEachFrame(frames);
+        keepOnlyTheFirstTenFrames(frames);
+    }
+
+    private void addNextTwoFrameToEachFrame(ArrayList<Frame> frames) {
         for (int i = 0; i < frames.size(); i++) {
             Frame frame = getFrameAtIndex(frames, i);
             Frame nextFrame = getFrameAtIndex(frames, i + 1);
@@ -32,7 +54,9 @@ public class BowlingParser {
                 break;
             }
         }
+    }
 
+    private void keepOnlyTheFirstTenFrames(ArrayList<Frame> frames) {
         while (frames.size() > 10) {
             frames.remove(10);
         }
@@ -46,10 +70,6 @@ public class BowlingParser {
             frame = new NullFrame();
         }
         return frame;
-    }
-
-    private ArrayList<Frame> parse(int[] trialScores) {
-        return parse(0, trialScores);
     }
 
     private ArrayList<Frame> parse(int numberOfTrialsOffset, int[] trialScores) {
@@ -89,15 +109,6 @@ public class BowlingParser {
             throw new FrameParseException();
         }
         return frame;
-    }
-
-    private int[] getSingleTrialScores(String frameString) {
-        char[] charArrays = frameString.toCharArray();
-        int[] trialScores = new int[charArrays.length];
-        for (int i = 0; i < trialScores.length; i++) {
-            trialScores[i] = parseSingleTrialScore(charArrays[i]);
-        }
-        return trialScores;
     }
 
     private int parseSingleTrialScore(char stringValue) {
