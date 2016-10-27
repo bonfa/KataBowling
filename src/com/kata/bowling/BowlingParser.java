@@ -72,20 +72,20 @@ public class BowlingParser {
         return frame;
     }
 
-    private ArrayList<Frame> parse(int numberOfTrialsOffset, int[] trialScores) {
+    private ArrayList<Frame> parse(int currentNumberOfTrials, int[] trialScores) {
         ArrayList<Frame> frames = new ArrayList<>();
-        if (numberOfTrialsOffset >= trialScores.length) {
+        if (currentNumberOfTrials >= trialScores.length) {
             return frames;
         } else {
-            int numberOfTrialsOfNextFrame = getNextFrameIndex(numberOfTrialsOffset, trialScores);
-            Frame frame = parseFrame(numberOfTrialsOffset, numberOfTrialsOfNextFrame, trialScores);
+            int numberOfTrialsOfNextFrame = getNextFrameIndexOffset(currentNumberOfTrials, trialScores);
+            Frame frame = parseFrame(currentNumberOfTrials, numberOfTrialsOfNextFrame, trialScores);
             frames.add(frame);
-            frames.addAll(parse(numberOfTrialsOffset + numberOfTrialsOfNextFrame, trialScores));
+            frames.addAll(parse(currentNumberOfTrials + numberOfTrialsOfNextFrame, trialScores));
             return frames;
         }
     }
 
-    private int getNextFrameIndex(int indexOffset, int[] trialScores) {
+    private int getNextFrameIndexOffset(int indexOffset, int[] trialScores) {
         int nextFrameIndex = 2;
         if (trialScores[indexOffset] == STRIKE) {
             nextFrameIndex = 1;
