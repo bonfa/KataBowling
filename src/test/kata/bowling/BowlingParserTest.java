@@ -84,6 +84,11 @@ public class BowlingParserTest {
         assertThat(frames.get(1).getScore(), is(5));
     }
 
+    @Test(expected = BowlingParser.FrameParseException.class)
+    public void name() throws Exception {
+        List<Frame> frames = new BowlingParser().parse("4p");
+    }
+
     @Test
     public void five_trials_with_strikes() throws Exception {
         List<Frame> frames = new BowlingParser().parse("4-X5/");
