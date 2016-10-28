@@ -2,13 +2,30 @@ package com.kata.bowling;
 
 import com.kata.bowling.frame.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class BowlingParser {
 
     private static final int STRIKE = -1;
     private static final int SPARE = -2;
+    private final Map<Character, Integer> map;
+
+    public BowlingParser() {
+        map = new HashMap<Character, Integer>() {{
+            put('X', STRIKE);
+            put('/', SPARE);
+            put('-', 0);
+            put('1', 1);
+            put('2', 2);
+            put('3', 3);
+            put('4', 4);
+            put('5', 5);
+            put('6', 6);
+            put('7', 7);
+            put('8', 8);
+            put('9', 9);
+        }};
+    }
 
     public List<Frame> parse(String frameString) {
         ArrayList<Frame> frames = new ArrayList<>();
@@ -116,17 +133,11 @@ public class BowlingParser {
     }
 
     private int parseSingleTrialScore(char stringValue) {
-        if (stringValue >= '1' && stringValue <= '9') {
-            return Character.getNumericValue(stringValue);
-        } else if (stringValue == 'X') {
-            return STRIKE;
-        } else if (stringValue == '/') {
-            return SPARE;
-        } else if (stringValue == '-') {
-            return 0;
-        } else {
+        if (!map.containsKey(stringValue)) {
             throw new FrameParseException();
         }
+
+        return map.get(stringValue);
     }
 
     public static class FrameParseException extends RuntimeException {
