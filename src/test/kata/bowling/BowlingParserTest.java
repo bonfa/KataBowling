@@ -12,7 +12,7 @@ import static org.junit.Assert.assertThat;
 
 public class BowlingParserTest {
 
-    public static final Frame NULL_FRAME = new NullFrame();
+    private static final Frame NULL_FRAME = new NullFrame();
 
     @Test
     public void no_frames() throws Exception {

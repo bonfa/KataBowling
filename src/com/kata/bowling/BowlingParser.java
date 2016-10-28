@@ -8,8 +8,6 @@ public class BowlingParser {
 
     private static final int STRIKE = -1;
     private static final int SPARE = -2;
-    private final Map<Character, Integer> map;
-
     private static final HashMap<Character, Integer> PARSING_RULES = new HashMap<Character, Integer>() {{
         put('X', STRIKE);
         put('/', SPARE);
@@ -24,6 +22,8 @@ public class BowlingParser {
         put('8', 8);
         put('9', 9);
     }};
+
+    private final Map<Character, Integer> map;
 
     public BowlingParser() {
         map = PARSING_RULES;
