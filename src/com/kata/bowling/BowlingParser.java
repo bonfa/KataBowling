@@ -12,20 +12,24 @@ public class BowlingParser {
 
     public List<Frame> parse(String frameString) {
         ArrayList<Frame> frames = new ArrayList<>();
-        if (hasFrame(frameString)) {
-            int[] trialScores = getSingleTrialScores(frameString);
-            frames = parse(trialScores);
+        if (hasFrames(frameString)) {
+            int[] singleTrialScores = getSingleTrialScores(frameString);
+            frames = parse(singleTrialScores);
             updateFrameStructure(frames);
         }
         return frames;
     }
 
-    private boolean hasFrame(String frameString) {
+    private boolean hasFrames(String frameString) {
         return frameString != null && !frameString.isEmpty();
     }
 
     private int[] getSingleTrialScores(String frameString) {
         char[] charArrays = frameString.toCharArray();
+        return getSingleTrialScores(charArrays);
+    }
+
+    private int[] getSingleTrialScores(char[] charArrays) {
         int[] trialScores = new int[charArrays.length];
         for (int i = 0; i < trialScores.length; i++) {
             trialScores[i] = parseSingleTrialScore(charArrays[i]);
