@@ -3,6 +3,7 @@ package com.kata.bowling;
 import com.kata.bowling.frame.Frame;
 
 import java.util.List;
+import java.util.Scanner;
 
 public class Bowling {
 
@@ -20,7 +21,15 @@ public class Bowling {
     }
 
     public static void main(String[] args) {
-        // write your code here
+        Scanner scanner = new Scanner(System.in);
+        while (scanner.hasNext()) {
+            BowlingParser parser = new BowlingParser();
+            List<Frame> frames = parser.parse(scanner.nextLine());
+            Bowling bowling = new Bowling();
+            int total = bowling.total(frames);
+            System.out.println("total = " + total);
+        }
+        scanner.close();
     }
 
 }
