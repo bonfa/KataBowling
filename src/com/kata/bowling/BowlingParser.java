@@ -30,17 +30,31 @@ public class BowlingParser {
     }
 
     public List<Frame> parse(String frameString) {
-        ArrayList<Frame> frames = new ArrayList<>();
-        if (hasFrames(frameString)) {
-            int[] singleTrialScores = getSingleTrialScores(frameString);
-            frames = parse(singleTrialScores);
-            updateFrameStructure(frames);
+        if (!hasFrames(frameString)) {
+            throw new TooFewFramesException();
         }
-        return frames;
+        return parseFrames(frameString);
     }
 
     private boolean hasFrames(String frameString) {
         return frameString != null && !frameString.isEmpty();
+    }
+
+    private ArrayList<Frame> parseFrames(String frameString) {
+        int[] singleTrialScores = getSingleTrialScores(frameString);
+        ArrayList<Frame> frames = parse(singleTrialScores);
+        checkFrameLength(frames);
+        updateFrameStructure(frames);
+        return frames;
+    }
+
+    private void checkFrameLength(ArrayList<Frame> frames) {
+        if (frames.size() < 10) {
+            throw new TooFewFramesException();
+        }
+        if (frames.size() > 12) {
+            throw new TooManyFramesException();
+        }
     }
 
     private int[] getSingleTrialScores(String frameString) {
@@ -120,9 +134,12 @@ public class BowlingParser {
         Frame frame;
         if (nextFrameIndex == 1) {
             frame = new StrikeFrame();
-        } else if (numberOfTrialsOffset + 1 < trialScores.length) {
+        } else if (numberOfTrialsOffset < trialScores.length) {
             int firstTrialScore = trialScores[numberOfTrialsOffset];
-            int secondTrialScore = trialScores[numberOfTrialsOffset + 1];
+            int secondTrialScore = 0;
+            if (numberOfTrialsOffset + 1 < trialScores.length) {
+                secondTrialScore = trialScores[numberOfTrialsOffset + 1];
+            }
             if (secondTrialScore == SPARE) {
                 frame = new SpareFrame(firstTrialScore);
             } else {
@@ -143,5 +160,11 @@ public class BowlingParser {
     }
 
     public static class FrameParseException extends RuntimeException {
+    }
+
+    public class TooManyFramesException extends RuntimeException {
+    }
+
+    public class TooFewFramesException extends RuntimeException {
     }
 }

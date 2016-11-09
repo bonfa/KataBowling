@@ -15,7 +15,7 @@ public class AcceptanceTest {
         assertThat(new Bowling().total(new BowlingParser().parse("XXXXXXXXXXXX")), is(300));
     }
 
-    @Test@Ignore
+    @Test
     public void all_spares() {
         assertThat(new Bowling().total(new BowlingParser().parse("5/5/5/5/5/5/5/5/5/5/5")), is(150));
     }
