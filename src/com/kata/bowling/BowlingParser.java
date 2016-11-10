@@ -40,32 +40,13 @@ public class BowlingParser {
         return frameString != null && !frameString.isEmpty();
     }
 
-    private ArrayList<Frame> parseFrames(String frameString) {
-        int[] singleTrialScores = getSingleTrialScores(frameString);
-        ArrayList<Frame> frames = parse(singleTrialScores);
-        checkFrameLength(frames);
-        checkInvalidFrames(frames);
+    private List<Frame> parseFrames(String frameString) {
+        List<Frame> frames = parse(getSingleTrialScores(frameString));
+        throwExceptionIfThereAreLessThanTenFrames(frames);
+        throwExceptionIfThereAreMoreThanTwelveFrames(frames);
+        throwExceptionIfThereAreFramesWithScoreGreaterThanTen(frames);
+        throwExceptionIfThereAreScoreFramesWithScoreGreaterThanTen(frames);
         return frames;
-    }
-
-    private void checkInvalidFrames(ArrayList<Frame> frames) {
-        for (Frame frame : frames) {
-            if (frame.getScore() > 10) {
-                throw new FrameScoreMoreThanTenException();
-            }
-            else if (frame instanceof ScoreFrame && frame.getScore() == 10) {
-                throw new WrongSpareFormatException();
-            }
-        }
-    }
-
-    private void checkFrameLength(ArrayList<Frame> frames) {
-        if (frames.size() < 10) {
-            throw new TooFewFramesException();
-        }
-        if (frames.size() > 12) {
-            throw new TooManyFramesException();
-        }
     }
 
     private int[] getSingleTrialScores(String frameString) {
@@ -84,54 +65,80 @@ public class BowlingParser {
         if (!map.containsKey(stringValue)) {
             throw new FrameParseException();
         }
-
         return map.get(stringValue);
     }
 
-    private ArrayList<Frame> parse(int[] trialScores) {
-        return parse(0, trialScores);
+    private List<Frame> parse(int[] trialScores) {
+        List<Frame> frames = new ArrayList<>();
+        int currentNumberOfTrials = 0;
+        while (currentNumberOfTrials < trialScores.length) {
+            frames.add(parseFrame(trialScores, currentNumberOfTrials));
+            currentNumberOfTrials = updateCurrentNumberOfTrials(trialScores[currentNumberOfTrials], currentNumberOfTrials);
+        }
+        return frames;
     }
 
-    private ArrayList<Frame> parse(int currentNumberOfTrials, int[] trialScores) {
-        ArrayList<Frame> frames = new ArrayList<>();
-        if (currentNumberOfTrials >= trialScores.length) {
-            return frames;
+    private Frame parseFrame(int[] trialScores, int currentNumberOfTrials) {
+        if (trialScores[currentNumberOfTrials] == STRIKE) {
+            return new StrikeFrame();
         } else {
-            int numberOfTrialsOfNextFrame = getNextFrameIndexOffset(currentNumberOfTrials, trialScores);
-            Frame frame = parseFrame(currentNumberOfTrials, numberOfTrialsOfNextFrame, trialScores);
-            frames.add(frame);
-            frames.addAll(parse(currentNumberOfTrials + numberOfTrialsOfNextFrame, trialScores));
-            return frames;
+            return parseTwoTrialsFrame(trialScores, currentNumberOfTrials);
         }
     }
 
-    private int getNextFrameIndexOffset(int indexOffset, int[] trialScores) {
-        int nextFrameIndex = 2;
-        if (trialScores[indexOffset] == STRIKE) {
-            nextFrameIndex = 1;
-        }
-        return nextFrameIndex;
-    }
-
-    private Frame parseFrame(int numberOfTrialsOffset, int nextFrameIndex, int[] trialScores) {
-        Frame frame;
-        if (nextFrameIndex == 1) {
-            frame = new StrikeFrame();
-        } else if (numberOfTrialsOffset < trialScores.length) {
-            int firstTrialScore = trialScores[numberOfTrialsOffset];
-            int secondTrialScore = 0;
-            if (numberOfTrialsOffset + 1 < trialScores.length) {
-                secondTrialScore = trialScores[numberOfTrialsOffset + 1];
-            }
-            if (secondTrialScore == SPARE) {
-                frame = new SpareFrame(firstTrialScore);
-            } else {
-                frame = new ScoreFrame(firstTrialScore, secondTrialScore);
-            }
+    private Frame parseTwoTrialsFrame(int[] trialScores, int currentNumberOfTrials) {
+        int firstTrialScore = getTrialScoreAtPosition(trialScores, currentNumberOfTrials);
+        int secondTrialScore = getTrialScoreAtPosition(trialScores, currentNumberOfTrials + 1);
+        if (secondTrialScore == SPARE) {
+            return new SpareFrame(firstTrialScore);
         } else {
-            throw new FrameParseException();
+            return new ScoreFrame(firstTrialScore, secondTrialScore);
         }
-        return frame;
+    }
+
+    private int getTrialScoreAtPosition(int[] trialScores, int index) {
+        int trialScore = 0;
+        if (index < trialScores.length) {
+            trialScore = trialScores[index];
+        }
+        return trialScore;
+    }
+
+    private int updateCurrentNumberOfTrials(int trialScore, int currentNumberOfTrials) {
+        if (trialScore == STRIKE) {
+            currentNumberOfTrials++;
+        } else {
+            currentNumberOfTrials += 2;
+        }
+        return currentNumberOfTrials;
+    }
+
+    private void throwExceptionIfThereAreLessThanTenFrames(List<Frame> frames) {
+        if (frames.size() < 10) {
+            throw new TooFewFramesException();
+        }
+    }
+
+    private void throwExceptionIfThereAreMoreThanTwelveFrames(List<Frame> frames) {
+        if (frames.size() > 12) {
+            throw new TooManyFramesException();
+        }
+    }
+
+    private void throwExceptionIfThereAreFramesWithScoreGreaterThanTen(List<Frame> frames) {
+        for (Frame frame : frames) {
+            if (frame.getScore() > 10) {
+                throw new FrameScoreMoreThanTenException();
+            }
+        }
+    }
+
+    private void throwExceptionIfThereAreScoreFramesWithScoreGreaterThanTen(List<Frame> frames) {
+        for (Frame frame : frames) {
+            if (frame instanceof ScoreFrame && frame.getScore() == 10) {
+                throw new WrongSpareFormatException();
+            }
+        }
     }
 
     public static class FrameParseException extends RuntimeException {
