@@ -11,7 +11,7 @@ public class ScoreFrame extends FrameImpl {
     }
 
     @Override
-    public int getScore() {
+    public int getScoreWithBonus() {
         return firstTrialScoreValue + secondTrialScoreValue;
     }
 
@@ -22,7 +22,12 @@ public class ScoreFrame extends FrameImpl {
 
     @Override
     public int getNextTwoTrialsScore() {
-        return getScore();
+        return getScoreWithBonus();
+    }
+
+    @Override
+    public int getScore() {
+        return getScoreWithBonus();
     }
 
     @Override

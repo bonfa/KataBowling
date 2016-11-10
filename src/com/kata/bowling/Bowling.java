@@ -14,7 +14,7 @@ public class Bowling {
         int totalScores = 0;
         if (frames != null && frames.size() > 0) {
             for (Frame frame : frames) {
-                totalScores += frame.getScore();
+                totalScores += frame.getScoreWithBonus();
             }
         }
         return totalScores;

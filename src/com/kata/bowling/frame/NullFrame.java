@@ -3,7 +3,7 @@ package com.kata.bowling.frame;
 public class NullFrame implements Frame {
 
     @Override
-    public int getScore() {
+    public int getScoreWithBonus() {
         return 0;
     }
 
@@ -19,6 +19,11 @@ public class NullFrame implements Frame {
 
     @Override
     public int getNextTwoTrialsScore() {
+        return 0;
+    }
+
+    @Override
+    public int getScore() {
         return 0;
     }
 

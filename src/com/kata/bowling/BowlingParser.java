@@ -44,8 +44,20 @@ public class BowlingParser {
         int[] singleTrialScores = getSingleTrialScores(frameString);
         ArrayList<Frame> frames = parse(singleTrialScores);
         checkFrameLength(frames);
+        checkInvalidFrames(frames);
         updateFrameStructure(frames);
         return frames;
+    }
+
+    private void checkInvalidFrames(ArrayList<Frame> frames) {
+        for (Frame frame : frames) {
+            if (frame.getScore() > 10) {
+                throw new FrameScoreMoreThanTenException();
+            }
+            else if (frame instanceof ScoreFrame && frame.getScore() == 10) {
+                throw new WrongSpareFormatException();
+            }
+        }
     }
 
     private void checkFrameLength(ArrayList<Frame> frames) {
@@ -166,5 +178,11 @@ public class BowlingParser {
     }
 
     public class TooFewFramesException extends RuntimeException {
+    }
+
+    public class FrameScoreMoreThanTenException extends RuntimeException {
+    }
+
+    public class WrongSpareFormatException extends RuntimeException {
     }
 }

@@ -100,6 +100,16 @@ public class BowlingParserTest {
         assertThat(frames.get(9), is(frame_10));
     }
 
+    @Test(expected = BowlingParser.FrameScoreMoreThanTenException.class)
+    public void a_frame_with_total_more_than_ten() throws Exception {
+        new BowlingParser().parse("492-3-4-5-6-7-8-9---");
+    }
+
+    @Test(expected = BowlingParser.WrongSpareFormatException.class)
+    public void a_frame_with_total_equals_to_ten_without_spare_or_strike() throws Exception {
+        new BowlingParser().parse("552-3-4-5-6-7-8-9---");
+    }
+
     @Test
     public void the_eleventh_and_twelfth_frames_serve_only_as_bonus_of_tenth_frame() throws Exception {
         List<Frame> frames = new BowlingParser().parse("------------------XXX");

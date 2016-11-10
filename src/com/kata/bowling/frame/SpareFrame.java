@@ -9,7 +9,7 @@ public class SpareFrame extends FrameImpl {
     }
 
     @Override
-    public int getScore() {
+    public int getScoreWithBonus() {
         return 10 + nextFrame.getFirstTrialScore();
     }
 
@@ -20,6 +20,11 @@ public class SpareFrame extends FrameImpl {
 
     @Override
     public int getNextTwoTrialsScore() {
+        return 10;
+    }
+
+    @Override
+    public int getScore() {
         return 10;
     }
 
