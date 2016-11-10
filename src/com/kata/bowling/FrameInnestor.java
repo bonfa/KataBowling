@@ -4,18 +4,19 @@ import com.kata.bowling.frame.Frame;
 import com.kata.bowling.frame.NullFrame;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FrameInnestor {
 
     public FrameInnestor() {
     }
 
-    public void innest(ArrayList<Frame> frames) {
+    public void innest(List<Frame> frames) {
         addNextTwoFramesToEachOfTheFirstNineFrames(frames);
         keepOnlyTheFirstTenFrames(frames);
     }
 
-    private void addNextTwoFramesToEachOfTheFirstNineFrames(ArrayList<Frame> frames) {
+    private void addNextTwoFramesToEachOfTheFirstNineFrames(List<Frame> frames) {
         for (int i = 0; i < frames.size(); i++) {
             Frame frame = getFrameAtIndex(frames, i);
             Frame nextFrame = getFrameAtIndex(frames, i + 1);
@@ -29,7 +30,7 @@ public class FrameInnestor {
         }
     }
 
-    private Frame getFrameAtIndex(ArrayList<Frame> frames, int index) {
+    private Frame getFrameAtIndex(List<Frame> frames, int index) {
         Frame frame;
         if (index < frames.size()) {
             frame = frames.get(index);
@@ -39,7 +40,7 @@ public class FrameInnestor {
         return frame;
     }
 
-    private void keepOnlyTheFirstTenFrames(ArrayList<Frame> frames) {
+    private void keepOnlyTheFirstTenFrames(List<Frame> frames) {
         while (frames.size() > 10) {
             frames.remove(10);
         }

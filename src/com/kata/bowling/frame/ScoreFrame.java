@@ -38,7 +38,7 @@ public class ScoreFrame extends FrameImpl {
         ScoreFrame frame = (ScoreFrame) o;
 
         if (firstTrialScoreValue != frame.firstTrialScoreValue) return false;
-        if (!nextFrame.equals(frame.nextFrame)) return false;
+//        if (!nextFrame.equals(frame.nextFrame)) return false;
         return secondTrialScoreValue == frame.secondTrialScoreValue;
     }
 

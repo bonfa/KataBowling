@@ -35,8 +35,7 @@ public class SpareFrame extends FrameImpl {
 
         SpareFrame that = (SpareFrame) o;
 
-        if (!nextFrame.equals(that.nextFrame)) return false;
-
+//        if (!nextFrame.equals(that.nextFrame)) return false;
         return firstTrialScore == that.firstTrialScore;
 
     }

@@ -26,9 +26,10 @@ public class StrikeFrame extends FrameImpl {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        StrikeFrame that = (StrikeFrame) o;
-
-        return nextFrame.equals(that.nextFrame);
+        return true;
+//        StrikeFrame that = (StrikeFrame) o;
+//
+//        return nextFrame.equals(that.nextFrame);
     }
 
     @Override
