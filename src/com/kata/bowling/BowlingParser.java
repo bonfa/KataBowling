@@ -24,9 +24,11 @@ public class BowlingParser {
     }};
 
     private final Map<Character, Integer> map;
+    private final FrameInnestor frameInnestor;
 
     public BowlingParser() {
         map = PARSING_RULES;
+        frameInnestor = new FrameInnestor();
     }
 
     public List<Frame> parse(String frameString) {
@@ -45,7 +47,7 @@ public class BowlingParser {
         ArrayList<Frame> frames = parse(singleTrialScores);
         checkFrameLength(frames);
         checkInvalidFrames(frames);
-        updateFrameStructure(frames);
+        frameInnestor.innest(frames);
         return frames;
     }
 
@@ -70,8 +72,7 @@ public class BowlingParser {
     }
 
     private int[] getSingleTrialScores(String frameString) {
-        char[] charArrays = frameString.toCharArray();
-        return getSingleTrialScores(charArrays);
+        return getSingleTrialScores(frameString.toCharArray());
     }
 
     private int[] getSingleTrialScores(char[] charArrays) {
@@ -82,43 +83,16 @@ public class BowlingParser {
         return trialScores;
     }
 
+    private int parseSingleTrialScore(char stringValue) {
+        if (!map.containsKey(stringValue)) {
+            throw new FrameParseException();
+        }
+
+        return map.get(stringValue);
+    }
+
     private ArrayList<Frame> parse(int[] trialScores) {
         return parse(0, trialScores);
-    }
-
-    private void updateFrameStructure(ArrayList<Frame> frames) {
-        addNextTwoFramesToEachOfTheFirstNineFrames(frames);
-        keepOnlyTheFirstTenFrames(frames);
-    }
-
-    private void addNextTwoFramesToEachOfTheFirstNineFrames(ArrayList<Frame> frames) {
-        for (int i = 0; i < frames.size(); i++) {
-            Frame frame = getFrameAtIndex(frames, i);
-            Frame nextFrame = getFrameAtIndex(frames, i + 1);
-            Frame nextNextFrame = getFrameAtIndex(frames, i + 2);
-            nextFrame.add(nextNextFrame);
-            frame.add(nextFrame);
-            if (i == 9) {
-                nextNextFrame.add(new NullFrame());
-                break;
-            }
-        }
-    }
-
-    private void keepOnlyTheFirstTenFrames(ArrayList<Frame> frames) {
-        while (frames.size() > 10) {
-            frames.remove(10);
-        }
-    }
-
-    private Frame getFrameAtIndex(ArrayList<Frame> frames, int index) {
-        Frame frame;
-        if (index < frames.size()) {
-            frame = frames.get(index);
-        } else {
-            frame = new NullFrame();
-        }
-        return frame;
     }
 
     private ArrayList<Frame> parse(int currentNumberOfTrials, int[] trialScores) {
@@ -163,14 +137,6 @@ public class BowlingParser {
         return frame;
     }
 
-    private int parseSingleTrialScore(char stringValue) {
-        if (!map.containsKey(stringValue)) {
-            throw new FrameParseException();
-        }
-
-        return map.get(stringValue);
-    }
-
     public static class FrameParseException extends RuntimeException {
     }
 
@@ -185,4 +151,5 @@ public class BowlingParser {
 
     public class WrongSpareFormatException extends RuntimeException {
     }
+
 }
