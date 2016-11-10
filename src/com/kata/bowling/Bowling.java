@@ -23,7 +23,7 @@ public class Bowling {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNext()) {
-            BowlingParser parser = new BowlingParser();
+            BowlingParser parser = new BowlingParser(new FrameInnestor());
             List<Frame> frames = parser.parse(scanner.nextLine());
             Bowling bowling = new Bowling();
             int total = bowling.total(frames);

@@ -5,7 +5,7 @@ import com.kata.bowling.frame.NullFrame;
 
 import java.util.ArrayList;
 
-class FrameInnestor {
+public class FrameInnestor {
 
     public FrameInnestor() {
     }

@@ -26,9 +26,9 @@ public class BowlingParser {
     private final Map<Character, Integer> map;
     private final FrameInnestor frameInnestor;
 
-    public BowlingParser() {
+    public BowlingParser(FrameInnestor frameInnestor) {
         map = PARSING_RULES;
-        frameInnestor = new FrameInnestor();
+        this.frameInnestor = frameInnestor;
     }
 
     public List<Frame> parse(String frameString) {
