@@ -13,17 +13,13 @@ import static org.junit.Assert.assertThat;
 
 public class BowlingTest {
 
-    private static final Frame NULL_FRAME = new NullFrame();
-    private FrameInnestor frameInnestor;
-
     @Before
     public void setUp() throws Exception {
-        frameInnestor = new FrameInnestor();
     }
 
     @Test
     public void no_frames() {
-        Bowling bowling = new Bowling(null, frameInnestor);
+        Bowling bowling = new Bowling(null);
         assertThat(bowling.total(), is(0));
         assertThat(bowling.total(), is(0));
     }
@@ -33,7 +29,7 @@ public class BowlingTest {
         List<Frame> frames = new ArrayList<>();
         Frame frame = new ScoreFrame(4, 0);
         frames.add(frame);
-        Bowling bowling = new Bowling(frames, frameInnestor);
+        Bowling bowling = new Bowling(frames);
         assertThat(bowling.total(), is(4));
     }
 
@@ -41,9 +37,8 @@ public class BowlingTest {
     public void a_single_spare_frame() {
         List<Frame> frames = new ArrayList<>();
         Frame frame = new SpareFrame(4);
-        frame.add(NULL_FRAME);
         frames.add(frame);
-        Bowling bowling = new Bowling(frames, frameInnestor);
+        Bowling bowling = new Bowling(frames);
         assertThat(bowling.total(), is(10));
     }
 
@@ -51,9 +46,8 @@ public class BowlingTest {
     public void a_single_strike_frame() {
         List<Frame> frames = new ArrayList<>();
         Frame frame = new StrikeFrame();
-        frame.add(NULL_FRAME);
         frames.add(frame);
-        Bowling bowling = new Bowling(frames, frameInnestor);
+        Bowling bowling = new Bowling(frames);
         assertThat(bowling.total(), is(10));
     }
 
@@ -66,7 +60,7 @@ public class BowlingTest {
         frames.add(frame_1);
         frames.add(frame_2);
         frames.add(frame_3);
-        Bowling bowling = new Bowling(frames, frameInnestor);
+        Bowling bowling = new Bowling(frames);
         assertThat(bowling.total(), is(2 + 7 + 9));
     }
 
@@ -76,15 +70,13 @@ public class BowlingTest {
 
         Frame frame_3 = new ScoreFrame(5, 4);
         Frame frame_2 = new ScoreFrame(4, 3);
-        frame_2.add(frame_3);
         Frame frame_1 = new SpareFrame(4);
-        frame_1.add(frame_2);
 
         frames.add(frame_1);
         frames.add(frame_2);
         frames.add(frame_3);
 
-        Bowling bowling = new Bowling(frames, frameInnestor);
+        Bowling bowling = new Bowling(frames);
         assertThat(bowling.total(), is((10 + 4) + 7 + 9));
     }
 
@@ -92,18 +84,16 @@ public class BowlingTest {
     public void more_frames_with_strikes() throws Exception {
         List<Frame> frames = new ArrayList<>();
 
-        Frame frame_3 = new ScoreFrame(5, 4);
-        Frame frame_2 = new ScoreFrame(4, 3);
-        frame_2.add(frame_3);
         Frame frame_1 = new StrikeFrame();
-        frame_1.add(frame_2);
+        Frame frame_2 = new ScoreFrame(4, 3);
+        Frame frame_3 = new ScoreFrame(5, 4);
 
         frames.add(frame_1);
         frames.add(frame_2);
         frames.add(frame_3);
 
-        Bowling bowling = new Bowling(frames, frameInnestor);
-        assertThat(bowling.total(), is((10 + 7) + 7 + 9));
+        Bowling bowling = new Bowling(frames);
+        assertThat(bowling.total(), is((10 + 4 + 3) + 4 + 3 + 5 + 4));
     }
 
 }

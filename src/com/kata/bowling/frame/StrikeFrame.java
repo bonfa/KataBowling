@@ -1,19 +1,10 @@
 package com.kata.bowling.frame;
 
-public class StrikeFrame extends FrameImpl {
-    @Override
-    public int getScoreWithBonus() {
-        return 10 + nextFrame.getNextTwoTrialsScore();
-    }
+public class StrikeFrame implements Frame {
 
     @Override
     public int getFirstTrialScore() {
         return 10;
-    }
-
-    @Override
-    public int getNextTwoTrialsScore() {
-        return 10 + nextFrame.getFirstTrialScore();
     }
 
     @Override
@@ -27,9 +18,6 @@ public class StrikeFrame extends FrameImpl {
         if (o == null || getClass() != o.getClass()) return false;
 
         return true;
-//        StrikeFrame that = (StrikeFrame) o;
-//
-//        return nextFrame.equals(that.nextFrame);
     }
 
     @Override

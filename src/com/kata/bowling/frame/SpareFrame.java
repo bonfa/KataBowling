@@ -1,6 +1,6 @@
 package com.kata.bowling.frame;
 
-public class SpareFrame extends FrameImpl {
+public class SpareFrame implements Frame {
     private int firstTrialScore;
 
     public SpareFrame(int firstTrialScore) {
@@ -9,18 +9,8 @@ public class SpareFrame extends FrameImpl {
     }
 
     @Override
-    public int getScoreWithBonus() {
-        return 10 + nextFrame.getFirstTrialScore();
-    }
-
-    @Override
     public int getFirstTrialScore() {
         return firstTrialScore;
-    }
-
-    @Override
-    public int getNextTwoTrialsScore() {
-        return 10;
     }
 
     @Override
