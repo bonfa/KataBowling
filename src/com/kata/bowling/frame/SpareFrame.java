@@ -19,13 +19,22 @@ public class SpareFrame implements Frame {
     }
 
     @Override
+    public boolean isSpare() {
+        return true;
+    }
+
+    @Override
+    public boolean isStrike() {
+        return false;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         SpareFrame that = (SpareFrame) o;
 
-//        if (!nextFrame.equals(that.nextFrame)) return false;
         return firstTrialScore == that.firstTrialScore;
 
     }

@@ -21,6 +21,16 @@ public class ScoreFrame implements Frame {
     }
 
     @Override
+    public boolean isSpare() {
+        return false;
+    }
+
+    @Override
+    public boolean isStrike() {
+        return false;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -28,7 +38,6 @@ public class ScoreFrame implements Frame {
         ScoreFrame frame = (ScoreFrame) o;
 
         if (firstTrialScoreValue != frame.firstTrialScoreValue) return false;
-//        if (!nextFrame.equals(frame.nextFrame)) return false;
         return secondTrialScoreValue == frame.secondTrialScoreValue;
     }
 

@@ -1,7 +1,6 @@
 package com.kata.bowling.frame;
 
 public class NullFrame implements Frame {
-
     @Override
     public int getFirstTrialScore() {
         return 0;
@@ -13,13 +12,12 @@ public class NullFrame implements Frame {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        return (o != null && getClass() == o.getClass());
+    public boolean isSpare() {
+        return false;
     }
 
     @Override
-    public String toString() {
-        return "NullFrame{}";
+    public boolean isStrike() {
+        return false;
     }
 }

@@ -5,4 +5,8 @@ public interface Frame {
     int getFirstTrialScore();
 
     int getScore();
+
+    boolean isSpare();
+
+    boolean isStrike();
 }

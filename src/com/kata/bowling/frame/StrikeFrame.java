@@ -13,6 +13,16 @@ public class StrikeFrame implements Frame {
     }
 
     @Override
+    public boolean isSpare() {
+        return false;
+    }
+
+    @Override
+    public boolean isStrike() {
+        return true;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

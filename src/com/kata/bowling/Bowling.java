@@ -1,48 +1,60 @@
 package com.kata.bowling;
 
 import com.kata.bowling.frame.Frame;
-import com.kata.bowling.frame.SpareFrame;
-import com.kata.bowling.frame.StrikeFrame;
+import com.kata.bowling.frame.NullFrame;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Bowling {
 
+    private static final int MAX_NUMBER_OF_FRAMES = 10;
     private final List<Frame> frames;
 
     public Bowling(List<Frame> frames) {
         this.frames = frames;
     }
 
-    //FIXME remove instance of
     public int total() {
         int totalScores = 0;
         if (frames != null && frames.size() > 0) {
-            for (int i = 0; i < Math.min(10, frames.size()); i++) {
-                Frame frameNew = frames.get(i);
-                totalScores += frameNew.getScore();
-                if (frameNew instanceof SpareFrame) {
-                    if (i + 1 < frames.size()) {
-                        totalScores += frames.get(i + 1).getFirstTrialScore();
-                    }
-                } else if (frameNew instanceof StrikeFrame) {
-                    if (i + 1 < frames.size()) {
-                        if (frames.get(i + 1) instanceof StrikeFrame) {
-                            totalScores += frames.get(i + 1).getFirstTrialScore();
-                            if (i + 2 < frames.size()) {
-                                totalScores += frames.get(i + 2).getFirstTrialScore();
-                            }
-                        }
-                        else {
-                            totalScores += frames.get(i + 1).getScore();
-                        }
-                    }
+            totalScores = getTotalScores(totalScores);
+        }
+        return totalScores;
+    }
+
+    private int getTotalScores(int totalScores) {
+        for (int i = 0; i < MAX_NUMBER_OF_FRAMES; i++) {
+            Frame frame = getFrameAt(i);
+            totalScores += frame.getScore();
+            if (frame.isSpare()) {
+                Frame nextFrame = getFrameAt(i + 1);
+                totalScores += nextFrame.getFirstTrialScore();
+            } else if (frame.isStrike()) {
+                Frame nextFrame = getFrameAt(i + 1);
+                totalScores += nextFrame.getScore();
+                if (isStrike(nextFrame)) {
+                    Frame nextNextFrame = getFrameAt(i + 2);
+                    totalScores += nextNextFrame.getFirstTrialScore();
                 }
             }
         }
         return totalScores;
+    }
+
+    private Frame getFrameAt(int index) {
+        Frame nextFrame;
+        if (index < frames.size()) {
+            nextFrame = frames.get(index);
+        } else {
+            nextFrame = new NullFrame();
+        }
+        return nextFrame;
+    }
+
+
+    private boolean isStrike(Frame frame) {
+        return frame.isStrike();
     }
 
     public static void main(String[] args) {
